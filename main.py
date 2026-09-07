@@ -49,6 +49,11 @@ def create_job(job: Job, db: Session = Depends(get_db)):
     db.refresh(new_job)
 
     return new_job
+@app.get("/jobs/status/{status}")
+def get_jobs_by_status(status: str, db: Session = Depends(get_db)):
+    jobs = db.query(models.Job).filter(models.Job.status == status).all()
+
+    return jobs
 @app.get("/jobs/{job_id}")
 def get_job(job_id: int, db: Session = Depends(get_db)):
     job = db.query(models.Job).filter(models.Job.id == job_id).first()
